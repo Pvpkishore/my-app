@@ -12,46 +12,46 @@ const cors = initMiddleware(
   })
 );
 
-export async function POST(request) {
+export async function handler(req, res) {
   // Run CORS middleware
-  await cors(request, request);
+  await cors(req, res);
 
-  const body = await request.json();
+  if (req.method === 'POST') {
+    const body = req.body;
 
-  const client = await clientPromise;
-  const db = client.db("bittree");
-  const collection = db.collection("links");
+    // Connect to MongoDB
+    const client = await clientPromise;
+    const db = client.db("bittree");
+    const collection = db.collection("links");
 
-  // If the handle is already claimed, you cannot create the bittree
-  const doc = await collection.findOne({ handle: body.handle });
+    // Check if the handle already exists
+    const doc = await collection.findOne({ handle: body.handle });
 
-  if (doc) {
-    return new Response(
-      JSON.stringify({
+    if (doc) {
+      // Return error response if handle exists
+      return res.status(400).json({
         success: false,
         error: true,
         message: 'This Bittree already exists!',
         result: null,
-      }),
-      {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  }
+      });
+    }
 
-  const result = await collection.insertOne(body);
+    // Insert new document if handle does not exist
+    const result = await collection.insertOne(body);
 
-  return new Response(
-    JSON.stringify({
+    // Return success response
+    return res.status(200).json({
       success: true,
       error: false,
       message: 'Your Bittree has been generated!',
       result: result,
-    }),
-    {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    }
-  );
+    });
+  } else {
+    // If the method is not POST, return 405 Method Not Allowed
+    return res.status(405).json({
+      success: false,
+      message: 'Method Not Allowed',
+    });
+  }
 }
