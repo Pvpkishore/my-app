@@ -55,6 +55,7 @@ const GenerateComponent = () => {
   
       if (!r.ok) {
         // Handle server errors (non-2xx responses)
+        console.error(`Error: ${r.statusText}`);
         toast.error(`Error: ${r.statusText}`);
         return;
       }
