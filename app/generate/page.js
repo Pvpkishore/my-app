@@ -31,27 +31,46 @@ const GenerateComponent = () => {
   };
 
   const submitLinks = async () => {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
 
-    const raw = JSON.stringify({
-      links,
-      handle,
-      pic,
-      desc,
-    });
+  const raw = JSON.stringify({
+    links,
+    handle,
+    pic,
+    desc,
+  });
 
-    console.log(raw);
+  console.log(raw);
 
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
+  const requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow",
+  };
 
+  try {
     const r = await fetch("https://linktrekishore.vercel.app/api/add", requestOptions);
-    const result = await r.json();
+
+    if (!r.ok) {
+      // If the response status is not OK, handle the error
+      toast.error(`Error: ${r.statusText}`);
+      return;
+    }
+
+    const text = await r.text(); // Read the response as plain text
+    let result;
+
+    try {
+      result = JSON.parse(text); // Try parsing the response as JSON
+    } catch (error) {
+      // If JSON parsing fails, log and handle the error
+      console.error("Failed to parse response:", error);
+      toast.error("Failed to parse server response");
+      return;
+    }
+
     if (result.success) {
       toast.success(result.message);
       setLinks([{ link: "", linktext: "" }]);
@@ -63,7 +82,14 @@ const GenerateComponent = () => {
     } else {
       toast.error(result.message);
     }
-  };
+  } catch (error) {
+    // Handle any unexpected errors (e.g., network issues)
+    console.error("Error submitting links:", error);
+    toast.error("An error occurred while submitting the links");
+  }
+};
+
+};
 
   return (
     <div className="bg-[#E9C0E9] min-h-screen grid grid-cols-2">
