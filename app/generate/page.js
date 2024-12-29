@@ -51,7 +51,7 @@ const GenerateComponent = () => {
     };
   
     try {
-      const r = await fetch("https://linktrekishore.vercel.app/generate?handle=/api/add", requestOptions);
+      const r = await fetch("https://linktrekishore.vercel.app/api/add", requestOptions);
   
       if (!r.ok) {
         // Handle server errors (non-2xx responses)
