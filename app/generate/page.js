@@ -97,7 +97,6 @@ const GenerateComponent = () => {
   }
 };
 
-
 };
 
   return (
@@ -182,8 +181,7 @@ const GenerateComponent = () => {
       </div>
     </div>
   );
-};
-
+  
 const Generate = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
