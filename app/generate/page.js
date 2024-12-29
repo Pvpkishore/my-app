@@ -31,73 +31,72 @@ const GenerateComponent = () => {
   };
 
   const submitLinks = async () => {
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-
-  const raw = JSON.stringify({
-    links,
-    handle,
-    pic,
-    desc,
-  });
-
-  console.log(raw);
-
-  const requestOptions = {
-    method: "POST",
-    headers: myHeaders,
-    body: raw,
-    redirect: "follow",
-  };
-
-  try {
-    const r = await fetch("https://linktrekishore.vercel.app/api/add", requestOptions);
-
-    if (!r.ok) {
-      // Handle server errors (non-2xx responses)
-      toast.error(`Error: ${r.statusText}`);
-      return;
-    }
-
-    // Try reading the response as text first
-    const text = await r.text();
-    let result = {};
-
-    // If the response body is not empty, try parsing as JSON
-    if (text) {
-      try {
-        result = JSON.parse(text);
-      } catch (error) {
-        console.error("Failed to parse response as JSON:", error);
-        toast.error("Failed to parse server response.");
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+  
+    const raw = JSON.stringify({
+      links,
+      handle,
+      pic,
+      desc,
+    });
+  
+    console.log(raw);
+  
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+  
+    try {
+      const r = await fetch("https://linktrekishore.vercel.app/api/add", requestOptions);
+  
+      if (!r.ok) {
+        // Handle server errors (non-2xx responses)
+        toast.error(`Error: ${r.statusText}`);
         return;
       }
-    } else {
-      console.error("Empty response received.");
-      toast.error("Empty response from the server.");
-      return;
+  
+      // Try reading the response as text first
+      const text = await r.text();
+      let result = {};
+  
+      // If the response body is not empty, try parsing as JSON
+      if (text) {
+        try {
+          result = JSON.parse(text);
+        } catch (error) {
+          console.error("Failed to parse response as JSON:", error);
+          toast.error("Failed to parse server response.");
+          return;
+        }
+      } else {
+        console.error("Empty response received.");
+        toast.error("Empty response from the server.");
+        return;
+      }
+  
+      // Proceed if the response is valid
+      if (result.success) {
+        toast.success(result.message);
+        setLinks([{ link: "", linktext: "" }]);
+        setpic("");
+        sethandle("");
+        setTimeout(() => {
+          router.push(`/${handle}`);
+        }, 2000);
+      } else {
+        toast.error(result.message);
+      }
+    } catch (error) {
+      // Handle unexpected errors (e.g., network issues)
+      console.error("Error submitting links:", error);
+      toast.error("An error occurred while submitting the links.");
     }
-
-    // Proceed if the response is valid
-    if (result.success) {
-      toast.success(result.message);
-      setLinks([{ link: "", linktext: "" }]);
-      setpic("");
-      sethandle("");
-      setTimeout(() => {
-        router.push(`/${handle}`);
-      }, 2000);
-    } else {
-      toast.error(result.message);
-    }
-  } catch (error) {
-    // Handle unexpected errors (e.g., network issues)
-    console.error("Error submitting links:", error);
-    toast.error("An error occurred while submitting the links.");
-  }
-};
-
-};
+  };
+  
 
   return (
     <div className="bg-[#E9C0E9] min-h-screen grid grid-cols-2">
@@ -181,7 +180,8 @@ const GenerateComponent = () => {
       </div>
     </div>
   );
-  
+};
+
 const Generate = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
