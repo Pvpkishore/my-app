@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { FaGithub, FaLinkedin } from 'react-icons/fa';
 
 
 export default function Home() {
@@ -41,10 +42,10 @@ export default function Home() {
           <p className="text-purple-900 font-extrabold text-5xl">your Linktree in minutes</p>
           <p className="text-purple-900 text-xl my-4">Connect your TikTok, Instagram, Twitter, website, store, videos, music, podcast, events and more. It all comes together in a link in bio landing page designed to convert.</p>
           <div className="flex tracking-normal">
-          <button className="bg-purple-900 text-white rounded-full px-4 py-4 font-semibold hover:bg-purple-800">Get started for free</button>
+            <button className="bg-purple-900 text-white rounded-full px-4 py-4 font-semibold hover:bg-purple-800">Get started for free</button>
+          </div>
         </div>
-        </div>
-        
+
       </section>
 
       <section className="bg-[#780016] min-h-[100vh]  grid grid-cols-2 font-poppins">
@@ -54,8 +55,8 @@ export default function Home() {
           <p className="text-[#e9c0e9] font-extrabold text-5xl">Twitter and other bios</p>
           <p className="text-[#e9c0e9] text-xl my-4">Add your unique Linktree URL to all the platforms and places you find your audience. Then use your QR code to drive your offline traffic online.</p>
           <div className="flex tracking-normal">
-          <button className="bg-[#e9c0e9] text-black rounded-full px-4 py-4 font-semibold hover:bg-[#f07af0]">Get started for free</button>
-        </div>
+            <button className="bg-[#e9c0e9] text-black rounded-full px-4 py-4 font-semibold hover:bg-[#f07af0]">Get started for free</button>
+          </div>
         </div>
         <div className="flex items-center justify-center flex-col ml-[4vw]">
           <img className="h-2/3" src="./Thirdpage.png" alt="homepage image" />
@@ -63,9 +64,33 @@ export default function Home() {
       </section>
 
       <section className="bg-[#502274] min-h-[60vh]">
-              <div className="p-20">
-                <img className="h-3/6  rounded-3xl" src="./linktre.png" alt="homepage image" />
-              </div>
+        <div className="p-20 ">
+          <img className="h-3/6  rounded-3xl" src="./linktre.png" alt="homepage image" />
+          <span className="absolute right-28 font-poppins font-extrabold text-[#e9c0e9] ">By-pvpkishore</span>
+        </div>
+        <div className="flex flex-col items-center ">
+          <div className="flex gap-6 mt-2 mb-4">
+            {/* GitHub Link */}
+            <a
+              href="https://github.com/Pvpkishore"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:scale-110 transition-transform"
+            >
+              <FaGithub className="text-[#e9c0e9] text-4xl" />
+            </a>
+
+            {/* LinkedIn Link */}
+            <a
+              href="https://www.linkedin.com/in/ponnala-venkata-padma-kishor-76679326a/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:scale-110 transition-transform"
+            >
+              <FaLinkedin className="text-[#e9c0e9] text-4xl" />
+            </a>
+          </div>
+        </div>
       </section>
     </main>
   );
